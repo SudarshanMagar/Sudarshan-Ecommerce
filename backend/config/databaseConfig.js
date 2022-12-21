@@ -4,7 +4,7 @@ mongoose.set("strictQuery",false);
 connectDB = async()=>{
     mongoose.connect(process.env.DB_URL, {})
     .then(()=> {
-        console.log("MOngoDB is connected successfully!");
+        console.log("MongoDB is connected successfully!");
     })
     .catch((err) =>{
         console.log(err);

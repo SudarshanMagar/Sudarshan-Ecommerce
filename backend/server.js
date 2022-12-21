@@ -8,7 +8,7 @@ dotenv.config({path:"backend/config/.env"});
 connectDB();
 app.listen(process.env.PORT, ()=>{
     console.log(`Server started in port ${process.env.PORT}`);
-  console.log("Hello World");
+    console.log("Hello World");
 });
 
 
