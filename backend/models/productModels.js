@@ -57,11 +57,11 @@ const productSchema = new mongoose.Schema({
             "clothes",
             "Food",
             "Smart phones",
-            "Laptops",
+            "Laptop",
             "home appliances",
             "beauty",
         ],
     },
 });
 
-module.experts = mongoose.model("Product",productSchema);
+module.exports = mongoose.model("Product",productSchema);
