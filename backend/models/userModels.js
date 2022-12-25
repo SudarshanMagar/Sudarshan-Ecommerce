@@ -10,7 +10,11 @@ const userschema = new mongoose.Schema({
         type: String,
         required: [true,"Please Enter the email"],
         validator: [validator.email,"Please enter the validate email"],
-    },    
+    },  
+    password:{
+        type:String,
+        required:[true,"Please enter the password"],
+    },  
     profile_pic:{
         public_id:{
             type: String,
@@ -30,6 +34,7 @@ const userschema = new mongoose.Schema({
         type: String,
         default: "user"
     },
+    
 });
 
 module.exports = mongoose.model("User",userschema);

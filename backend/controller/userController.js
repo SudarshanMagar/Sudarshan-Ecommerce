@@ -3,15 +3,21 @@ const User = require("../models/userModels");
 
 //add register
 
-exports.addUser = this.addUser = async (req,res,next)=>{
-    try{
-        const user = await User.create(req.body);
-        return res.status(200).json({
-            success:true,
-            user:user,
+exports.registerUser = async (req,res,next)=>
+{
+        const {name,email,password,address} = req.body;
+        const user = await User.create({
+            name,
+            email,
+            password,
+            address,
+            profile_pic:{
+                public_id: "default",
+                url:"default",
+            },
         });
-    }
-    catch(e){
-        console.log(e);
-    }
+        return res.status(200).json({
+            message: "user Registered",
+            user,
+        });
 };

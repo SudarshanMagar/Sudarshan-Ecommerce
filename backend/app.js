@@ -10,11 +10,5 @@ const userRoute = require("./routes/userRoute");
 app.use("/api/user", userRoute);
 
 
-
-
 module.exports = app;
-
-
-
-
 
