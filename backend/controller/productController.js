@@ -123,7 +123,7 @@ exports.addProductReview = async (req,res) =>{
     });
 };
 
-
+//add reviews
 exports.getAllReviews = async (req,res,next)=>{
     try{
         const product =await Product.findById(req.params.id);
@@ -136,5 +136,42 @@ exports.getAllReviews = async (req,res,next)=>{
             success:false,
             message: error.message,
         });
+    }
+};
+
+//delete reviews
+exports.deleteReviews = async(req,res,next)=>{
+    try{
+        const product = await Product.findById(req.params.id);
+        const reviews =  await product.reviews.filter(
+            (rev)=>rev.user.toString()!= req.user._id.toString()
+            );
+            if (reviews.length == product.reviews.length){
+                return res.status(200).json({
+                    success:false,
+                    message:"Reviews Already Deleted",
+                });
+            }
+        product.reviews = reviews;
+        product.noOfReviews -=1;
+
+        let totalRating = 0;
+        product.reviews.forEach((review)=>{
+            totalRating += review.rating;
+        })
+        const leng = product.reviews.length == 0 ?? 1;
+        product.rating = totalRating / leng;
+        await product.save();
+
+        return res.status(200).json({
+            success:true,
+            product,
+        });
+    }
+    catch(error){
+     return res.json({
+        success:false,
+        message: error.message,
+     });   
     }
 };
