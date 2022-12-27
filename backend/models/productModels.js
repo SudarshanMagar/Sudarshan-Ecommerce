@@ -30,6 +30,10 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default:0
     },
+    rating:{
+        type: Number,
+        default:0
+    },
     
     reviews:[
         {
@@ -37,12 +41,17 @@ const productSchema = new mongoose.Schema({
                 type: String,
                 required:[true,"Please Enter the name"],
             },
-            Comment:{
+            comment:{
                 type: String,
             },
             rating:{
                 type: Number,
                 required: [true,"Please Enter the rating"],
+            },
+            user:{
+                type: mongoose.Schema.ObjectId,
+                ref:"User",
+                required:true,
             },
         },
     ],
@@ -58,6 +67,11 @@ const productSchema = new mongoose.Schema({
             "home appliances",
             "beauty",
         ],
+    },
+    user:{
+        type: mongoose.Schema.ObjectId,
+        ref:"User",
+        required:true,
     },
 });
 

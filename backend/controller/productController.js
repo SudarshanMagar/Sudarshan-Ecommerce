@@ -5,6 +5,7 @@ const SearchSort = require("../utils/SearchSort");
 
 exports.addProduct = addProduct = async (req,res,next)=>{
     try{
+        req.body.user = req.user.id;
         const product = await Product.create(req.body);
         return res.status(200).json({
             success:true,
@@ -74,5 +75,66 @@ exports.removeProduct =  async (req,res)=>{
     }
     catch(e){
         console.log(e);
+    }
+};
+
+// write a function to add product review
+
+exports.addProductReview = async (req,res) =>{
+    const {rating, comment,proId } = req.body;
+    const name = req.user.name;
+    const id = req.user._id;
+
+
+    const review ={
+        name,
+        user: id,
+        rating,
+        comment,
+    };
+    const product = await Product.findById(proId)
+    const isReviewed = await product.reviews.find(
+        (review)=> review.user.toString() == req.user._id.toString()
+    );
+    if (!isReviewed){
+        product.reviews.push(review);
+        product.noOfReviews +=1;
+    }
+    else{
+        product.reviews.forEach((review)=>{
+        if(review.user.toString() == req.user._id.toString()){
+            review.comment=comment;
+            review.rating=rating;
+        }
+     })
+    }
+
+    //calculate rating
+    let totalRating = 0;
+    product.reviews.forEach((review)=>{
+        totalRating += review.rating;
+    });
+    product.rating = totalRating / product.reviews.length;
+    await product.save();
+
+    return res.status(200).json({
+        success: true,
+        product,
+    });
+};
+
+
+exports.getAllReviews = async (req,res,next)=>{
+    try{
+        const product =await Product.findById(req.params.id);
+    return res.status(200).json({
+        success: true,
+        reviews: product.reviews,
+    });
+    }catch{
+        return res.json({
+            success:false,
+            message: error.message,
+        });
     }
 };
