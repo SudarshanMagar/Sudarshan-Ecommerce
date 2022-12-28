@@ -12,5 +12,9 @@ const userRoute = require("./routes/userRoute");
 app.use("/api/user", userRoute);
 
 
+const orderRoute = require("./routes/orderRoute");
+app.use("/api/order",orderRoute );
+
+
 module.exports = app;
 
